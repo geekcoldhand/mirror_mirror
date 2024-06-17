@@ -5,25 +5,26 @@ const synth = window.speechSynthesis;
 
 const stopButton = document
   .getElementById("stop-btn")
-  .addEventListener("click", handleStopButtonClick, false);
+  .addEventListener("click", (event) => handleStopButtonClick(event), false);
 const startButton = document
   .getElementById("start-btn")
-  .addEventListener("click", handleStartButtonClick, false); //TODO: this click need to be socket connection
+  .addEventListener("click", (event) => handleStartButtonClick(event), false); //TODO: this click need to be socket connection
 recognition.interimResults = true;
 recognition.continuous = true;
 
-function handleStartButtonClick() {
-  console.log("Start button clicked.");
+function handleStartButtonClick(event) {
+  console.log(event.target);
+  event.preventDefault();
   recognition.start();
   startButton.disabled = true;
   outputDiv.textContent = "Recording...";
 }
-function handleStopButtonClick() {
+function handleStopButtonClick(event) {
   console.log("Stop button clicked.");
+  event.preventDefault();
   recognition.stop();
   const utterThis = new SpeechSynthesisUtterance(textResult);
   synth.speak(utterThis);
-  //outputDiv.textContent = "stopped...";
 }
 
 recognition.onresult = (event) => {
