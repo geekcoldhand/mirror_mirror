@@ -2,9 +2,9 @@ let textResult = "";
 const outputDiv = document.getElementById("output");
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 const synth = window.speechSynthesis;
-const socket = io();
 
 window.addEventListener("load", (event) => {
+  const socket = io("http://localhost:3000");
   console.log("Page loaded.");
 
   // Handle incoming events from the server
@@ -49,7 +49,7 @@ recognition.onresult = (event) => {
 };
 
 recognition.onend = () => {
-  startButton.disabled = false;
+  // startButton.disabled = false;
   startButton.textContent = "Start Recording";
 };
 

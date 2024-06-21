@@ -4,13 +4,13 @@
   "description": "magic mirror clone in the Disney Mirror Mirror on the wall interface",
   "main": "index.html",
   "scripts": {
-    "start:client": "nodemon --watch /client/index.html",
+    "start:client": "open client/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "GWACH",
   "license": "ISC",
   "dependencies": {
-    "nodemon": "^3.1.3"
+    "socket.io-client": "^4.7.5"
   }
 }
