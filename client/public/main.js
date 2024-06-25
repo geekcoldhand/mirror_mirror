@@ -1,9 +1,12 @@
+import "./index.css";
+import { initializeApp } from "firebase/app";
 let textResult = "";
 const outputDiv = document.getElementById("output");
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 const synth = window.speechSynthesis;
 
 window.addEventListener("load", (event) => {
+  initializeApp();
   const socket = io("http://localhost:3000");
   console.log("Page loaded.");
 
