@@ -1,22 +1,22 @@
-import "./index.css";
-import { initializeApp } from "firebase/app";
+const { initializeApp } = "firebase/app";
 let textResult = "";
 const outputDiv = document.getElementById("output");
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 const synth = window.speechSynthesis;
 
+recognition.interimResults = true;
+recognition.continuous = true;
+
 window.addEventListener("load", (event) => {
-  initializeApp();
-  const socket = io("http://localhost:3000");
+  // initializeApp();
+  //const socket = io("http://localhost:3000");
+  // socket.on("response", (data) => {
+  //   console.log(`Received response: ${data}`);
+  // });
+  // socket.emit("message", "Hello from the client!");
   console.log("Page loaded.");
 
-  // Handle incoming events from the server
-  socket.on("response", (data) => {
-    console.log(`Received response: ${data}`);
-  });
-
-  // Send a message to the server
-  socket.emit("message", "Hello from the client!");
+  handleStartButtonClick(event);
 });
 
 const stopButton = document
@@ -24,12 +24,9 @@ const stopButton = document
   .addEventListener("click", (event) => handleStopButtonClick(event), false);
 const startButton = document
   .getElementById("start-btn")
-  .addEventListener("click", (event) => handleStartButtonClick(event), false); //TODO: this click need to be socket connection
-recognition.interimResults = true;
-recognition.continuous = true;
+  .addEventListener("click", (event) => handleStartButtonClick(event), false);
 
 function handleStartButtonClick(event) {
-  console.log(event.target);
   event.preventDefault();
   recognition.start();
   startButton.disabled = true;
@@ -41,7 +38,7 @@ function handleStopButtonClick(event) {
   recognition.stop();
   const utterThis = new SpeechSynthesisUtterance(textResult);
   synth.speak(utterThis);
-  socket.emit("message", textResult);
+  //socket.emit("message", textResult);
 }
 
 recognition.onresult = (event) => {
@@ -49,12 +46,17 @@ recognition.onresult = (event) => {
   textResult = result;
   outputDiv.textContent = result;
   //TODO: Send result to server
+
+  if (textResult === "Abort Abort" || textResult === "abort abort") {
+    console.log("handleStopButtonClick(event)");
+    handleStopButtonClick(event);
+  }
 };
 
-recognition.onend = () => {
-  // startButton.disabled = false;
-  startButton.textContent = "Start Recording";
-};
+// recognition.onend = () => {
+//   // startButton.disabled = false;
+//   startButton.textContent = "Start Recording";
+// };
 
 recognition.onerror = (event) => {
   console.error("Speech recognition error:", event.error);
